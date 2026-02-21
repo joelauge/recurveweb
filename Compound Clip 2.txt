@@ -1,0 +1,171 @@
+[00:00:00:02 - 00:00:24:11]
+Speaker 1
+ Hi, thanks for visiting. I'm Joel, the CEO of Recourse LLM and my brother Pierre is the CTO. We had a long conversation today about the tool, about what it does, what it's for. Thanks for watching. I'm here with Pierre. Pierre and I are working on this tool called Recourse LLM. Pierre, can you explain to me in your words, what it's supposed to do?
+
+[00:00:24:11 - 00:01:14:05]
+Speaker 2
+ Yeah, well, rather than just jumping a chain of thought and unnatural language, prompt jumps into a large language model in order to teach it and convince it and coax it to do the thing you want it to. I started assembling an orchestration layer outside and around the model and a group of models kind of forced by the situation I'm in where I have extremely constrained resources, having access to a whole bunch of really interesting and capable open source models, but where the models themselves are effectively handcuffed by the amount of context you have to force-speed them using the current paradigm with like, yes, yes, yes, okay.
+
+[00:01:14:05 - 00:01:23:15]
+Speaker 1
+ So in what context did you make the discovery about the token payload that was kind of the default payload?
+
+[00:01:24:19 - 00:01:26:11]
+Speaker 1
+ Tell us about that a little bit.
+
+[00:01:26:11 - 00:01:56:15]
+Speaker 2
+ So I was playing with some 10 year old GPs on a remote server and these very tiny, like sub-billion parameter models who in normal situations you, you know, they have a maximum context window of like 32,000 tokens, right? And you can do some stuff with that, but they're pretty limited. But these models are like, they're, they're incredibly capable models.
+
+[00:01:56:15 - 00:01:57:22]
+Speaker 1
+ They're just very small.
+
+[00:01:58:23 - 00:02:41:12]
+Speaker 2
+ They're, yeah, yeah, they can general purpose transform like, like nobody's business. But you need to provide them context in order for them to be able to transform anything. That's how it works. But all of the tools that do that agentically, I realized I was messing around with connecting VS code and whatever, a bunch of other agentic tools to these tiny little models. And I'm like, just context overflow right off the bat. It's like, there is not enough context for the model to do anything. Like that, that doesn't make sense. This query is like 40 characters. What is, why? What is the protocol? What is the protocol?
+
+[00:02:41:12 - 00:02:53:22]
+Speaker 1
+ Yeah. Right. And just in that environment, in that situation, most people would just stop at, oh, my hardware is not capable enough.
+
+[00:02:53:22 - 00:03:21:08]
+Speaker 2
+ I'm I, I come, I come from an embedded like a microcontroller, a constraint system, right? Yes. Environment, right? Like, like how many functions and use the whole code blocks. Can I cram into the 64 K of S RAM or whatever on this microcontroller? To make it do like, like it has, it has 128 pins and no, no storage capacity for code. You understand how to use all the memory register.
+
+[00:03:21:08 - 00:04:14:12]
+Speaker 1
+ But the reason you have experience in dealing with kind of small memory storage, limited storage capacity in microcontrollers is because of your, like your use of micro controllers in your military background and your sensor based work that you've done. Anything where the microcontroller is very limited because it has to be highly mobile or very low in energy usage or whatever. There's all kinds of in your background. You've had to deal with all these constraint environments on hardware to be able to control the, the code appropriately inside those microcontrollers. So that's, that's the context. Like I think people wouldn't otherwise understand most people in this environment are dealing with hardware that is capable from the get go. And so they wouldn't think about this particular solution.
+
+[00:04:14:12 - 00:04:28:05]
+Speaker 2
+ Yeah. And in fact, it's like the other way around, they're like, Oh, I just bought a $8,000 GPU. And, uh, how do I, well, how do I get more GPUs? Exactly.
+
+[00:04:29:22 - 00:04:33:19]
+Speaker 2
+ I just solved my problem by taking out a loan on my house.
+
+[00:04:33:19 - 00:04:34:17]
+Speaker 1
+ Exactly.
+
+[00:04:34:17 - 00:06:39:06]
+Speaker 2
+ So I was looking at how do I make this GPU that isn't like even the software was like, yeah, that that's not going to work. And then, and then I overcame that, that hurdle. And then I was like, okay, yeah, this model is running in this small amount of VRAM. Okay, cool. How do I get these models to do something in the small amount of VRAM? I'm like, okay, if I shrink the total context window of this model down to like 2000 K tokens and only present that model with, with queries that use 20% max 20% of that context window, leaving 80% of that context window for transformation and output, you get this relationship of like 20, you get an 80% output on your 20% input, right? And then you just cycle that. And I realized when I did that with these small models, I'm like, oh, shit. If I, if I keep iterating this way, this model is doing this at 1200 tokens per second on this 15 year old server and 10 year old GPU. And I'm like, I wonder if I take two of these 10 year old GPUs shoehorned into the server and run two of these models side by side and then do, you know, like run, run them in parallel and send, send queries, these like context limited queries via curl. And I'm like, oh shit, like, uh, I can actually do a lot because like the time to first token is faster than Python can interpret the script that is generating the queries or outputting the API call. Right. So I'm like, okay, so if you do that fast enough, it's actually silly. Like you can, you can type tons and tons of data that is properly parsed and sorted and chunked in advance through these tiny little models that actually get a lot of data through them. Actually more data faster than you can a very large parameter model. That's trying or a much larger parameter model that issue horned into the same amount of VRAM, but, but it's running at like max 10.
+
+[00:06:39:06 - 00:07:06:00]
+Speaker 1
+ Explain that a little bit. Like why is it that a smaller model can have you kind of went into it a little bit here, but let's elaborate on that a little bit. This little model is able to, um, is able to move data in and out of it in a, in a, in as quick a manner as possible, probably faster than a larger model because it's not doing as much processing because why
+
+[00:07:06:00 - 00:07:14:09]
+Speaker 2
+ is not trying to infer on an insane and godly amount of parameters.
+
+[00:07:14:09 - 00:07:21:00]
+Speaker 1
+ The, there are less parameters as a, as a model for it to reference.
+
+[00:07:21:00 - 00:08:46:14]
+Speaker 2
+ Yeah. It's like, yeah. So I, so like these big models suffer from, I noticed something. So like these very large models are fantastically capable, right? They're amazing. But they, they also suffer from this. Like if you really stress it with really novel questions, it's going to hallucinate. Right. It's going to hallucinate an answer, but it's going to give you one, but it's going to hallucinate an answer and it's going to take time to do it. Whereas like a human being will go like a really, really intelligent human being that they themselves have a lot of parameters in their head will go, I don't. Right. So what, what, what I realized is that they're all just the transformers are going to transform because that's what they do. So it doesn't actually matter necessarily that they have access to all of these parameters. If the information is how do I put it in like colloquial? If you give somebody tools and you teach them how to use them, and this might sound like a tangent, but it's, it's, if you provide somebody, even somebody who's not particularly skilled, provide them the best tool for the job. And if you're wise, a person handing this tool to this, this unskilled person, you say, Hey, I want you to do this single step of this much larger task.
+
+[00:08:47:15 - 00:09:03:20]
+Speaker 2
+ I just want you to do this one thing. I'm not going to explain to you the whole job. I don't need you to do the whole job. I need you to do you worker, just need you to do the small little bit, right? I need you to answer two plus two and here's a calculator that only calculates two plus two.
+
+[00:09:04:20 - 00:09:25:21]
+Speaker 2
+ You're going to do a good job. Right. So it turns out that orchestration is way more important than, than one number of parameters and, and necessarily compute power. Yeah. Right. If you can orchestrate a job effectively, you're going to get a better outcome.
+
+[00:09:25:21 - 00:10:25:21]
+Speaker 1
+ Yeah. That, that kind of speaks to the two, the two limitations that are at play somewhat. It's like, so the, the, the context window for these smaller models may be smaller, but there are techniques through orchestration that effectively remove the limitations, uh, or remove a lot of the limitations because what you're doing is you're pairing the smaller context window, but with the appropriate tool set. So, so that as, you know, as you find and discover more needs within that context window from the request you made, the tools being updated inside that context window in an ongoing way. And that's some of the orchestrations through the, through the, the REPL, right? Through the, the read a vowel print loops that's kind of running through the code and updating that context window that effectively makes that context window a more dynamic data set or a more dynamic fetcher of capabilities.
+
+[00:10:25:21 - 00:11:08:01]
+Speaker 2
+ Let's put it that way. I hate analogizing, but I'll use the analogy. It's like, it's like a military in traditional military operations and, and, and doctrine from around the world. You have a lot of bodies, not necessarily skilled bodies to execute missions, to execute tasks, right? Those, those workers, those soldiers, those individual task execution end points, right? Are orchestrated by policies, by doctrine and, and learned behavior by habits, by a hierarchy of habitual doing.
+
+[00:11:08:01 - 00:11:08:18]
+Speaker 1
+ Right.
+
+[00:11:08:18 - 00:12:26:20]
+Speaker 2
+ Right. So in old school, and I'll still exist in the world today, unprofessional militaries, soldiers at the front end don't really know anything more about what's going on in the mission other than point your rifle in that direction and go that way when I yell at you. Right. Right. Yeah. Like do this single task. That's all you're responsible for. And that it works to a degree. Yeah. It doesn't work as well as if the soldier at the front of the column knows what he's doing, where he's going, what the mission is and how to do the job of the person right above him and so on and so forth. Right. But no, but also his trains and discipline to do the task that he's doing. Right. Regardless of him knowing what the job of his immediate superior, right? So that's, that's just an analogy that I think a lot of people would understand, like a professional military, the soldiers at the front end know a lot of shit. They're really skilled. And then you have special operations guys who are like, they really know a lot of shit. They, they're very generous, right? They're extremely good at a lot of different things because the investment is high on a smaller percentage of worst. Whereas you have a bigger pool of low skilled workers. You still get the same task done, but instead of doing it with 10 people, you do it with 2,500 and it costs you a billion dollars.
+
+[00:12:26:20 - 00:12:31:15]
+Speaker 1
+ That's a really good analogy. That right there, then the numbers analogy is really good.
+
+[00:12:31:15 - 00:12:57:00]
+Speaker 2
+ Yeah. And that's scaled in one way or another. It's like, if you look at a frontier model that has a huge amount of parameters and this mixture of experts and then yarn and then all of these interior, all of these, they keep cramming more soldiers into the parameter hoping that it's just going to overcome all the limitations of it not being able to think like it can't think for itself. It can't even remember what it did.
+
+[00:12:57:00 - 00:13:41:13]
+Speaker 1
+ What it has for breakfast. Totally. That is, that is, I think, part of the novelty of this approach. It's that we're actually saying emphasize the emphasize on the doing of the work, put the emphasis on the optimization of the value of each token, rather than emphasizing the expansion of intelligence without evaluating that work. Right? It's like, it's like just because you have more neurons doesn't necessarily mean you use those neurons well. So now let's go into the, like some of the technique that you're using without giving everything away.
+
+[00:13:42:18 - 00:13:57:23]
+Speaker 1
+ Let's go, let's go into some of the tech. So you're constrained in this environment. You're trying to get these tinier models to do the work on older machines because you kind of don't have a choice and you get this technique up and running. Explain the behavior tree a little bit.
+
+[00:13:57:23 - 00:14:08:07]
+Speaker 2
+ They dare what drive your NPCs, your favorite NPCs in your video. They're also what they drive the most advanced robots, like autonomous,
+
+[00:14:09:08 - 00:15:51:09]
+Speaker 2
+ semi-autonomous robotic systems in the world. And that's, that's my background. Right. So like the, the behavior tree gives you a really fundamentally like easy to understand graphical visual means, even though it's programmatic, to orchestrate. It's just a, it's really just a workflow with a bunch of rules. And those rules allow the nodes in the workflow in the graph, you're building a graph, looks like a hierarchical tree that your nodes allow you to iterate and then reactively and responsibly to input. Right. They have input vectors at each point in the, in the behavior tree. So those input vectors allow a decision to be made and it can be really simple. And then you just have a really large tree with a lot of really simple decisions that can be made that can be like Boolean, like yes, no. Right. Or it can be, they can be very complicated where they have internal logic that runs each one node could, could, could be a whole program that makes a huge decision factor. And then analyzing a pretty large context of information using heuristics or some other algorithm that is way more efficient. That is way more from a compute perspective, doesn't need a GPU can run sequentially or, you know, you use multi-threading and a whole bunch of other techniques that you have at your disposal as a engineer, tech, you know, developer. And you'd be like, okay, well, I have the system. It's not just a GPU, like an NVDA H100 might be just a GPU and then you take advantage of that. But that's not a constrained system.
+
+[00:15:51:09 - 00:15:52:07]
+Speaker 1
+ Yeah.
+
+[00:15:52:07 - 00:16:12:19]
+Speaker 2
+ Right. That's not what we're talking about. We're talking about like you're you can you need to maximize the use of the systems you have. So the behavior tree allows you to do that. You can run it and be ran if you want, but you can also run it in just right on CPU cycles and more efficiently than you do run it on the GPU because you're taking away from the inference side of the model. If you do, right. You're giving them take.
+
+[00:16:12:19 - 00:17:22:04]
+Speaker 1
+ There's there's a reason I think that the frontier model builders think anthropic and open AI have started refining the tool sets and scaffolding around the intelligence of their models into like finance or into legal or into medical. Right. So so like there now there's a whole bunch of these these capable these capabilities that are refined tool sets around the intelligence. And that's because there are like you're saying there are there are approaches that are not intelligence driven. They're not driven by by novel thinking or or intelligence. They're actually driven by capability or by by deterministic outcome. Right. An example an example would be like we already we already know how most proteins are mapped. Don't have the AI model remap a protein to be able to evaluate it. Right. Just give it the map that we already understand and have it and have it in their information about that. Yeah. You know what I mean.
+
+[00:17:22:04 - 00:17:37:19]
+Speaker 2
+ Don't stand encyclopedia Britannica. You know what that is. Probably is at home at every damn agentic query to the model consuming all of your.
+
+[00:17:37:19 - 00:17:51:03]
+Speaker 1
+ Explain that was part of the discovery here. That was part of the discovery that made this a recourse LLM a big deal. It's it's it's that that was happening. Explain what you're what you're just saying here.
+
+[00:17:51:03 - 00:20:03:08]
+Speaker 2
+ What I'm saying is that agent builders are stealing your tokens by using a protocol that's fundamentally broken. It's fundamentally broken by the fact that in order to get the large language model to communicate what you need it to communicate or infer what you're expecting it to infer in any kind of rational sense. You have to feed it insatiable amounts of context. So using huge system prompt like I need you to run this function. I need the result of this function and then I need you to change it together with these other functions. And that's what I want. You can't actually use line or continue or to do that. It will send minimum five thousand tokens worth of unrelated garbage at every query to try and get the LLM to understand that. That's what you wanted to do as opposed to providing an external context to the large language model that you can point out and say like using natural language. Here's the job I want you to do. So if you can provide context outside of someone's cognitive load, they can just look up the context as it's needed and then break the task down into workable bites. So what you can do is you can rather than cramming 500 models into one model and then hoping it can do everything really well. You have a reasonably intelligent model orchestrate that has that consumes more resources than these other really, really, really effective high speed models, smaller parameters models that can only deal with so much cognitive load. And you go orchestrate these. Here's the overall task. Here's your context that you can look up as you progress through this task list. Here's your task list. I want you to progress through this task list, orchestrate whoever you need to get through this task list, break your tasks down into smaller tasks and offload those to other workers that are better at those tasks and then do that in a constrain system and never send, never send orchestration tasks.
+
+[00:20:03:08 - 00:20:18:04]
+Speaker 1
+ You're kind of referring to the safe grapple thing that we've got going where it's like maintain all of the tooling inside of this context window, of this particular window.
+
+[00:20:18:04 - 00:20:56:21]
+Speaker 2
+ Yeah. So here's a persistent environment and here are all of the resources that we're giving this persistent environment and instantiation at the beginning of the project. Right. What do you need to succeed? Here's here are the tools you need to succeed that I think you need to succeed and you have and you have the flexibility to add more because it's a computer. Yeah, you can do that. You have the opportunity to say, hey, we're missing this thing. We're missing this resource. Yeah, but we need it. Okay. Well, go fetch it because you've provided the tool to go do that and you've provided that tool in such a way that it doesn't need to know it has until it needs to know what it has. Yeah. It's like, holy shit.
+
+[00:20:56:21 - 00:21:47:10]
+Speaker 1
+ This is what it has. Is the address of the library that all the books are in. So, so it's like, I effectively what it has is it has YouTube search engine. It kind of, it can go. I don't know how to fix the plumbing underneath my sink, but I just, I need to fix my sink right now. So go and look up the tools that I might need, the video that I might need to teach me how to fix this thing that's happening underneath my sink and do it well. And like, give me all of the tools that are required to do that. But, but don't look, don't look at any other tool or any other video except this type of thing that I need to do right immediately now. And that's kind of what this in the, this kind of environment is doing, right?
+
+[00:21:47:10 - 00:22:17:20]
+Speaker 2
+ Provide a huge toolbox with all of the fanciest tools that it can look into in a single cycle and decide, oh, that's the right tool. That tool, that's the tool I'm going to use that matches this query. Yep. Right. And allow access to every sub worker, every subordinate worker provide those subordinate workers the same tool set, right? Or, or the appropriate subset of the tool set. If you, if the orchestrator is smart enough and well, and trained enough to do that, to be like, these are the tools you need.
+
+[00:22:17:20 - 00:22:47:03]
+Speaker 1
+ Here, you just to make it, you gotta make a note on that. That's where, that's where our biggest advantage will be long-term as well on, on recourse. It will be that we are building a data set for orchestration that is kind of proprietary and, and is refined over time, defined over time. So that those requests for tooling become better and better and better and better. That's right.
+
+[00:22:47:03 - 00:23:29:02]
+Speaker 2
+ And that's, that's, that's like habitual training. And there are, there are a bunch of really, really good ways to do that that are well-known and it just takes, just takes time iteration. Right. And then refinement structure of the thing to make it work has quite a bit of complexity to it. The use of the thing is like, just use it like you're talking to a chat bot or hook it up to a, a use, like use our coding agent. It just works. It just does the thing really. Yeah. Put it in between your tool that you're using right now and the large language model you're using right now and watch your token usage go down
+
+[00:23:29:02 - 00:24:16:20]
+Speaker 1
+ really at the end of the day. That's, that's from the, from the consumer or like even the enterprise side. It's, it's like we're orchestrating the use, the usage of tools, the, the, all of that process is being refined. And on the other end, you're getting the output that you want, arguably faster. You're getting it more complete. You're getting it in a fraction of the token usage. And it's, it's like you don't really change your mode of work. But you use this, this tool, basically you redirect your access to your tokens to this tool and then everything is done in the background and you just save money, time and power.
