@@ -20,7 +20,7 @@
 }
 
 body {
-  background-color: var(--bg-color);
+  background-color: transparent;
   color: var(--text-primary);
   font-family: var(--font-sans);
   line-height: 1.5;
@@ -88,6 +88,116 @@ p {
   padding: 8rem 0;
 }
 
+/* Responsive Layout Classes */
+.responsive-grid-large {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px;
+}
+
+.responsive-grid-medium {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.zenoh-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) 400px;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .two-col-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .zenoh-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: clamp(2.5rem, 8vw, 3.5rem) !important;
+  }
+
+  h2 {
+    font-size: 2rem !important;
+  }
+
+  .section-spacing {
+    padding: 4rem 0 !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .responsive-grid-large {
+    grid-template-columns: 1fr;
+  }
+
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
+  .nav-container {
+    padding: 0 1rem !important;
+  }
+}
+
+/* Navigation Utilities */
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav-overlay {
+  position: fixed;
+  top: 72px;
+  /* Nav height */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000000;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 0;
+  align-items: center;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
@@ -103,4 +213,25 @@ p {
 
 .fade-in {
   animation: fadeIn 0.8s ease forwards;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(214, 160, 75, 0.5);
+  /* var(--accent-primary) with opacity */
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(247, 189, 105, 0.8);
+  /* var(--accent-secondary) with opacity */
 }
