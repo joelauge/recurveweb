@@ -76,8 +76,8 @@ const Architecture = () => {
                     <div className="responsive-grid-medium">
                         <TechCard
                             icon={Terminal}
-                            title="REPL-Based Execution"
-                            description="Treats large documents as an external environment to be examined programmatically rather than ingested into context."
+                            title="Interactive Python REPL"
+                            description="Builds a responsive Python environment directly inside the context window for dynamic execution and analysis of code."
                         />
                         <TechCard
                             icon={GitBranch}
