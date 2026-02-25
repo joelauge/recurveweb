@@ -217,7 +217,7 @@ const ParticleBackground: React.FC = () => {
                     const brightnessBoost = 1 + interactionPower * 3.5;
                     const radius = p.baseSize * perspective * 2.2 * blurFactor * (p.isGold ? 1.2 : 1.0);
 
-                    const alphaBase = p.isGold ? 1.0 : 0.65;
+                    const alphaBase = p.isGold ? 0.7 : 0.455; // Reduced brightness by 30%
                     const alpha = Math.min(1.0, alphaBase * (1 / blurFactor) * brightnessBoost);
 
                     const gradient = ctx.createRadialGradient(

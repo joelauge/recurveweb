@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Terminal, Shield, Cpu, Globe, Zap, Box, Copy, CheckCircle2, Search, X } from 'lucide-react';
 import { useState } from 'react';
 import librariesData from '../assets/pythonLibraries.json';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const SectionTitle = ({ children, subtitle }: { children: React.ReactNode, subtitle?: string }) => (
     <div style={{ marginBottom: '3rem' }}>
@@ -146,6 +147,11 @@ const AccordionItem = ({ title, description, index }: { title: string, descripti
 };
 
 const Installation = () => {
+    usePageMeta({
+        title: 'RecourseLLM Installation | Deploy the Environment',
+        description: 'Get started with RecourseLLM. Step-by-step guide to installing the agent runtime, configuring the distributed telemetry, and escaping the context window.'
+    });
+
     const [searchQuery, setSearchQuery] = useState('');
 
     const filteredCategories = Object.entries(librariesData).map(([categoryName, libraries]) => {

@@ -56,7 +56,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
                 <CheckCircle2 size={48} color="#27c93f" style={{ marginBottom: '1.5rem' }} />
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Request Received</h3>
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                    An enterprise specialist will reach out to you within 24 hours.
+                    We'll be in touch shortly to schedule your demo.
                 </p>
                 <button onClick={onClose} className="btn-premium" style={{ padding: '0.75rem 2rem' }}>
                     Back to Site
@@ -98,9 +98,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
                 </button>
             )}
 
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Enterprise Access</h3>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Book a Demo</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '2rem' }}>
-                Scale your reasoning with industrial-grade context orchestration.
+                Schedule a technical walkthrough and see how RecourseLLM scales your reasoning.
             </p>
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -170,7 +170,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
                     style={{ width: '100%', padding: '12px', justifyContent: 'center' }}
                 >
                     {status === 'submitting' ? 'Processing...' : (
-                        <>Submit Request <Send size={16} /></>
+                        <>Request Demo <Send size={16} /></>
                     )}
                 </button>
 
