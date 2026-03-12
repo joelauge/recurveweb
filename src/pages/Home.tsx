@@ -6,7 +6,7 @@ import ContactForm from '../components/ContactForm';
 import { usePageMeta } from '../hooks/usePageMeta';
 
 const Hero = () => {
-    const [showForm, setShowForm] = useState(false);
+    const [formState, setFormState] = useState<{ show: boolean, mode: 'demo' | 'waitlist' }>({ show: false, mode: 'demo' });
 
     return (
         <header style={{ textAlign: 'center', paddingTop: '12rem', paddingBottom: '8rem' }}>
@@ -29,23 +29,16 @@ const Hero = () => {
                         RecourseLLM keeps your data in an external environment the model operates on, not inside a context window it's limited by.
                     </p>
 
-                    <AnimatePresence mode="wait">
-                        {!showForm ? (
-                            <motion.div
-                                key="actions"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}
-                            >
-                                <button onClick={() => setShowForm(true)} className="btn-premium">See it in action <ChevronRight size={16} /></button>
-                                <Link to="/architecture" className="btn-premium" style={{ background: 'transparent', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', textDecoration: 'none' }}>
-                                    Read the architecture
-                                </Link>
-                            </motion.div>
-                        ) : (
-                            <ContactForm onClose={() => setShowForm(false)} />
-                        )}
+                    <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <button onClick={() => setFormState({ show: true, mode: 'demo' })} className="btn-premium">See it in action <ChevronRight size={16} /></button>
+                        <button onClick={() => setFormState({ show: true, mode: 'waitlist' })} className="btn-premium" style={{ background: 'transparent', border: '1px solid var(--accent-primary)', color: 'var(--accent-primary)' }}>Join Beta Waitlist</button>
+                        <Link to="/architecture" className="btn-premium" style={{ background: 'transparent', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', textDecoration: 'none' }}>
+                            Read the architecture
+                        </Link>
+                    </div>
+
+                    <AnimatePresence>
+                        {formState.show && <ContactForm mode={formState.mode} onClose={() => setFormState(prev => ({ ...prev, show: false }))} />}
                     </AnimatePresence>
                 </motion.div>
             </div>
@@ -343,7 +336,7 @@ const DemoPlayer = () => {
                                 <X size={16} />
                             </button>
                             <iframe
-                                src="https://www.youtube.com/embed/0Ha6yC_2FG0?autoplay=1&mute=0&rel=0"
+                                src="https://www.youtube.com/embed/EP4hrC-p8Zw?autoplay=1&mute=0&rel=0"
                                 title="RecourseLLM Demo"
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -359,7 +352,7 @@ const DemoPlayer = () => {
 };
 
 const ClosingCTA = () => {
-    const [showForm, setShowForm] = useState(false);
+    const [formState, setFormState] = useState<{ show: boolean, mode: 'demo' | 'waitlist' }>({ show: false, mode: 'demo' });
 
     return (
         <section className="section-spacing" style={{ borderTop: '1px solid var(--border-subtle)', background: 'linear-gradient(to bottom, transparent, rgba(214,160,75,0.02))' }}>
@@ -372,13 +365,13 @@ const ClosingCTA = () => {
                     <div style={{ padding: '2.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '24px', border: '1px solid var(--border-subtle)' }}>
                         <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Enterprise</h3>
                         <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', minHeight: '3rem' }}>Deploy RecourseLLM on your own infrastructure for unlimited document analysis.</p>
-                        <button onClick={() => setShowForm(true)} className="btn-premium" style={{ width: '100%', justifyContent: 'center' }}>Book a Demo</button>
+                        <button onClick={() => setFormState({ show: true, mode: 'demo' })} className="btn-premium" style={{ width: '100%', justifyContent: 'center' }}>Book a Demo</button>
                     </div>
                     <div style={{ padding: '2.5rem', background: 'rgba(214,160,75,0.05)', borderRadius: '24px', border: '1px solid rgba(214,160,75,0.2)', position: 'relative', overflow: 'hidden' }}>
                         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'var(--accent-primary)' }} />
                         <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Gaming & Dev</h3>
                         <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', minHeight: '3rem' }}>Get early access to our dynamic environment engines and local REPL.</p>
-                        <button onClick={() => setShowForm(true)} className="btn-premium" style={{ width: '100%', justifyContent: 'center', background: 'transparent', border: '1px solid var(--accent-primary)', color: 'var(--accent-primary)' }}>Join the Beta</button>
+                        <button onClick={() => setFormState({ show: true, mode: 'waitlist' })} className="btn-premium" style={{ width: '100%', justifyContent: 'center', background: 'transparent', border: '1px solid var(--accent-primary)', color: 'var(--accent-primary)' }}>Join the Beta Waitlist</button>
                     </div>
                     <div style={{ padding: '2.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '24px', border: '1px solid var(--border-subtle)' }}>
                         <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Technical</h3>
@@ -388,7 +381,7 @@ const ClosingCTA = () => {
                 </div>
 
                 <AnimatePresence>
-                    {showForm && <ContactForm onClose={() => setShowForm(false)} />}
+                    {formState.show && <ContactForm mode={formState.mode} onClose={() => setFormState(prev => ({ ...prev, show: false }))} />}
                 </AnimatePresence>
             </div>
         </section>

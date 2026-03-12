@@ -238,33 +238,33 @@ const Installation = () => {
                     <div className="responsive-grid-medium">
                         <TechCard
                             icon={Cpu}
-                            title="Runs on Your Machine"
-                            description="Use Anthropic, OpenAI, or run completely local models. Private by default—your code and data stay yours unless you choose otherwise."
+                            title="Model-Agnostic by Design"
+                            description="RLLM runs above the inference layer. Swap backends — Anthropic, OpenAI, Gemini, Ollama — without touching orchestration code. Your data stays local unless you explicitly configure otherwise."
                         />
                         <TechCard
                             icon={Zap}
-                            title="Any Vibe-coding IDE"
-                            description="Seamlessly integrates into VSCode, Cursor, and JetBrains. Connects directly to the editor's workspace context and commands."
+                            title="IDE Integration"
+                            description="Hooks into VSCode, Cursor, and JetBrains via workspace context. The agent reads your project graph, open files, and shell environment directly — no manual context pasting required."
                         />
                         <TechCard
                             icon={Box}
-                            title="Persistent Memory"
-                            description="Remembers your project architecture, past decisions, and preferences. Becomes uniquely tailored to your codebase over time."
+                            title="Stateful Inference"
+                            description="Variables assigned in the environment are embedded into a dictionary namespace on write and retrieved via semantic query — not keyword lookup, not summarized chat history. State persists and compounds across sessions without consuming context tokens on recall."
                         />
                         <TechCard
                             icon={Globe}
-                            title="Browser & Web Control"
-                            description="Can browse documentation, read API specs, and extract needed information from the web entirely autonomously."
+                            title="Web & Doc Access"
+                            description="Fetches documentation, reads API specs, and extracts structured data from the web as part of task execution. Runs through the Layer 2 tool registry — no separate invocation needed."
                         />
                         <TechCard
                             icon={Terminal}
-                            title="Full System Access"
-                            description="Read and write files, run shell commands, execute tests, and build scripts. Full access or sandboxed—your choice."
+                            title="System Access"
+                            description="File I/O, shell commands, test runners, and build scripts are available through SafeREPL. Sandboxed by default. Full system access is opt-in and scoped per session."
                         />
                         <TechCard
                             icon={Shield}
-                            title="Skills & Plugins"
-                            description="Extend RecourseLLM with community skills or build your own. It can even dynamically write and compile its own skills."
+                            title="Skill Registry"
+                            description="Skills are Layer 3 modules that register into the Skill Registry at runtime. The agent can compose existing skills, write new ones, and register them mid-session without restart. Community skills install via the standard package path."
                         />
                     </div>
                 </div>
