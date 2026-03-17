@@ -20,7 +20,7 @@ const Footer = () => (
                 </div>
             </div>
             <div style={{ marginTop: '2rem', fontSize: '12px', color: 'var(--text-secondary)', textAlign: 'center' }}>
-                © {new Date().getFullYear()} RecourseLLM. All rights reserved. Architected for the distributed future.
+                © {new Date().getFullYear()} Recourse Software Inc. All rights reserved. Architected for the distributed future.
             </div>
         </div>
     </footer>

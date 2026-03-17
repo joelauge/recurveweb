@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "target": "es2022",
+        "module": "es2022",
+        "lib": [
+            "es2022"
+        ],
+        "types": [
+            "@cloudflare/workers-types"
+        ],
+        "moduleResolution": "Bundler",
+        "strict": true,
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "checkJs": false,
+        "isolatedModules": true
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}

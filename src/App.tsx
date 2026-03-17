@@ -6,6 +6,7 @@ import ParticleBackground from './components/ParticleBackground';
 import Home from './pages/Home';
 import Architecture from './pages/Architecture';
 import Installation from './pages/Installation';
+import Invest from './pages/Invest';
 import './index.css';
 
 // Scroll to anchor on route change
@@ -47,6 +48,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/architecture" element={<Architecture />} />
             <Route path="/installation" element={<Installation />} />
+            <Route path="/invest" element={<Invest />} />
           </Routes>
           <Footer />
         </div>
