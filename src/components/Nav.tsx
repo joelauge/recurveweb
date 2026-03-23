@@ -43,6 +43,7 @@ const Nav = () => {
                 <div className="desktop-nav" style={{ display: 'flex', gap: '32px', alignItems: 'center', fontSize: '14px', color: 'var(--text-secondary)' }}>
                     <Link to="/installation" style={{ color: 'inherit', textDecoration: 'none' }}>Installation</Link>
                     <Link to="/architecture" style={{ color: 'inherit', textDecoration: 'none' }}>Architecture</Link>
+                    <Link to="/blog" style={{ color: 'inherit', textDecoration: 'none' }}>Blog</Link>
                     <Link to="/#performance" style={{ color: 'inherit', textDecoration: 'none' }}>Performance</Link>
                 </div>
 
@@ -103,6 +104,23 @@ const Nav = () => {
                             }}
                         >
                             Architecture
+                        </Link>
+                        <Link
+                            to="/blog"
+                            style={{
+                                display: 'block',
+                                width: '100%',
+                                textAlign: 'center',
+                                padding: '1.5rem',
+                                background: '#000000',
+                                color: 'var(--text-primary)',
+                                textDecoration: 'none',
+                                fontSize: '1.5rem',
+                                fontWeight: 500,
+                                borderBottom: '1px solid rgba(255,255,255,0.1)'
+                            }}
+                        >
+                            Blog
                         </Link>
                         <Link
                             to="/#performance"

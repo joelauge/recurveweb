@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import Architecture from './pages/Architecture';
 import Installation from './pages/Installation';
 import Invest from './pages/Invest';
+import BlogIndex from './pages/BlogIndex';
+import BlogPost from './pages/BlogPost';
 import './index.css';
 
 // Scroll to anchor on route change
@@ -49,6 +51,8 @@ const App = () => {
             <Route path="/architecture" element={<Architecture />} />
             <Route path="/installation" element={<Installation />} />
             <Route path="/invest" element={<Invest />} />
+            <Route path="/blog" element={<BlogIndex />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
           </Routes>
           <Footer />
         </div>
