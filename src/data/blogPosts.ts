@@ -70,7 +70,7 @@ export const blogPosts: BlogPost[] = [
         items: [
           { name: 'Standard RAG pipeline', val: '~1.2M tokens per complex task', waste: 65, signal: 35 },
           { name: 'Agentic loop with memory summarization', val: '~450K tokens', waste: 48, signal: 52 },
-          { name: 'RLLM with SemanticREPLDict (Layer 0)', val: '~25K tokens', waste: 4, rllm: 96 }
+          { name: 'RLLM with Semantic Dictionary (Layer 0)', val: '~25K tokens', waste: 4, rllm: 96 }
         ]
       },
       {
@@ -135,7 +135,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "How many tokens does your system spend, per session, on recovering information from previous sessions or from the beginning of the current one? In a standard stateless LLM architecture, this number is high by default — the model reconstructs from scratch every time. In an architecture with persistent external state, it approaches zero. `SemanticREPLDict` writes state on assignment and retrieves it via semantic query — no reconstruction required, no tokens consumed on recall."
+        text: "How many tokens does your system spend, per session, on recovering information from previous sessions or from the beginning of the current one? In a standard stateless LLM architecture, this number is high by default — the model reconstructs from scratch every time. In an architecture with persistent external state, it approaches zero. The Semantic Dictionary writes state on assignment and retrieves it via semantic query — no reconstruction required, no tokens consumed on recall."
       },
       {
         type: 'heading',
@@ -150,7 +150,7 @@ export const blogPosts: BlogPost[] = [
         type: 'statRow',
         stats: [
           { num: '98%', label: 'Token reduction on complex enterprise tasks vs. standard RAG' },
-          { num: '0', label: 'Context tokens consumed on state recall with SemanticREPLDict' },
+          { num: '0', label: 'Context tokens consumed on state recall with the Semantic Dictionary' },
           { num: '5', label: "Architectural layers between your task and the model's context window" }
         ]
       },
@@ -161,7 +161,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "RecourseLLM is a five-layer orchestration stack that sits above the inference layer. The key primitive is Layer 0: the `SemanticREPLDict`, a persistent external namespace backed by a vector store. When the agent assigns a variable — a document, a decision, a computed result, a project state — it goes into the namespace. When the agent needs it later, it issues a semantic query and retrieves exactly what it needs."
+        text: "RecourseLLM is a five-layer orchestration stack that sits above the inference layer. The key primitive is Layer 0: the Semantic Dictionary, a persistent external namespace backed by a vector store. When the agent assigns a variable — a document, a decision, a computed result, a project state — it goes into the namespace. When the agent needs it later, it issues a semantic query and retrieves exactly what it needs."
       },
       {
         type: 'paragraph',
@@ -174,8 +174,8 @@ export const blogPosts: BlogPost[] = [
       {
         type: 'principleGrid',
         principles: [
-          { num: 'PRINCIPLE 01', title: 'State lives outside the window', text: 'Variables, decisions, and session history persist in the SemanticREPLDict namespace. The model queries what it needs per step. Nothing is re-read unnecessarily.' },
-          { num: 'PRINCIPLE 02', title: 'Code executes, not re-prompts', text: 'SafeREPL lets the model operate on live objects via generated code. Tool calls become function calls. Token overhead per operation is near zero.' },
+          { num: 'PRINCIPLE 01', title: 'State lives outside the window', text: 'Variables, decisions, and session history persist in the Semantic Dictionary namespace. The model queries what it needs per step. Nothing is re-read unnecessarily.' },
+          { num: 'PRINCIPLE 02', title: 'Code executes, not re-prompts', text: 'Safe Containerized Environment lets the model operate on live objects via generated code. Tool calls become function calls. Token overhead per operation is near zero.' },
           { num: 'PRINCIPLE 03', title: 'Skills compound across sessions', text: 'The SkillRegistry accumulates capabilities at Layer 3. Skills written and registered in one session are available in the next — without re-supplying their implementation in the context window.' },
           { num: 'PRINCIPLE 04', title: 'Model-agnostic by design', text: 'The orchestration stack runs above the inference layer. Swap backends — Anthropic, OpenAI, Gemini, Ollama — without changing architecture. Every model improvement becomes an RLLM improvement.' }
         ]
