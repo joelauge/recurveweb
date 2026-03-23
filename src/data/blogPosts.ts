@@ -53,7 +53,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "Every call to the model begins with a full re-read. Your system prompt — which might contain hundreds of lines of instructions, context, role definitions, and behavioral constraints — gets fed in on every single invocation. Your conversation history, if you're maintaining one, gets fed in. Any documents you've attached get fed in. The model processes all of it, every time, before it generates a single token of output."
+        text: "Every call to the model begins with a full re-read. Your system prompt, which might contain hundreds of lines of instructions, context, role definitions, and behavioral constraints, gets fed in on every single invocation. Your conversation history, if you're maintaining one, gets fed in. Any documents you've attached get fed in. The model processes all of it, every time, before it generates a single token of output."
       },
       {
         type: 'paragraph',
@@ -96,7 +96,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "Bigger context windows are a genuine improvement. They defer this problem. They don't solve it — because the problem is structural, not a matter of scale."
+        text: "Bigger context windows are a genuine improvement. They defer this problem. They don't solve it because the problem is structural, not a matter of scale."
       },
       {
         type: 'pullQuote',
@@ -113,7 +113,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "Token spend is an input metric. What you actually care about is output quality, output velocity, and task completion rate at a given budget. These are the numbers that should drive your AI infrastructure decisions — not raw spend."
+        text: "Token spend is an input metric. What you actually care about is output quality, output velocity, and task completion rate at a given budget. These are the numbers that should drive your AI infrastructure decisions, not raw spend."
       },
       {
         type: 'paragraph',
