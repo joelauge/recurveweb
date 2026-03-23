@@ -13,7 +13,7 @@ import './index.css';
 
 // Scroll to anchor on route change
 const ScrollToAnchor = () => {
-  const { hash } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
     if (hash) {
       const element = document.getElementById(hash.replace('#', ''));
@@ -23,7 +23,7 @@ const ScrollToAnchor = () => {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [hash]);
+  }, [pathname, hash]);
   return null;
 };
 
