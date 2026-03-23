@@ -15,7 +15,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'jensen-is-right',
     title: 'Jensen Is Right.',
     subtitle: "The Question Is What You're Spending On.",
-    deck: "When Nvidia's CEO says engineers should burn $250K in AI tokens a year, he's making a resource allocation argument. What he leaves open is whether those tokens are doing intelligence work — or housekeeping.",
+    deck: "When Nvidia's CEO says engineers should burn $250K in AI tokens a year, he's making a resource allocation argument. What he leaves open is whether those tokens are doing intelligence work, or housekeeping.",
     author: 'Joel Augé - Co-Founder @ ReCourseLLM',
     date: 'March 2026',
     readTime: '8 min read',
@@ -23,11 +23,11 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         type: 'paragraph',
-        text: "Jensen Huang made headlines in March 2026 when he told the All-In podcast that a software engineer earning $500,000 a year should be spending at least $250,000 annually on AI tokens. The analogy he reached for was chip designers who refused to use CAD tools — professionally negligent, he said, in an age where AI is progressing this fast."
+        text: "Jensen Huang made headlines in March 2026 when he told the All-In podcast that a software engineer earning $500,000 a year should be spending at least $250,000 annually on AI tokens. The analogy he reached for was chip designers who refused to use CAD tools: professionally negligent, he said, in an age where AI is progressing this fast."
       },
       {
         type: 'paragraph',
-        text: "He's not wrong. The argument for investing heavily in AI tooling is sound. The engineers and organizations that learn to work with AI at high bandwidth — not as a parlor trick, but as a genuine operational multiplier — will outperform those who don't. That's not a controversial claim."
+        text: "He's not wrong. The argument for investing heavily in AI tooling is sound. The engineers and organizations that learn to work with AI at high bandwidth, not as a parlor trick, but as a genuine operational multiplier, will outperform those who don't. That's not a controversial claim."
       },
       {
         type: 'paragraph',
@@ -57,11 +57,11 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "This is not a bug. It's the architecture. Transformer models are stateless between calls. They don't remember your previous session. They don't cache the context you gave them an hour ago. You either re-supply it or it's gone."
+        text: "This is not a bug. It's the architecture. Transformer models are stateless between calls. They don't remember your previous session. They don't cache the context you gave them an hour ago. You either re-supply it or it is gone."
       },
       {
         type: 'paragraph',
-        text: "**on complex, long-running enterprise tasks, a significant fraction of your token spend is structural overhead** — not intelligence, not reasoning, not output. It's the model re-reading the manual before it can answer your question.",
+        text: "**on complex, long-running enterprise tasks, a significant fraction of your token spend is structural overhead,** not intelligence, not reasoning, and not output. It's the model re-reading the manual before it can answer your question.",
         isStrong: true
       },
       {
@@ -75,7 +75,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "The waste column in that diagram isn't idleness. It's the model doing real computation on tokens that carry no new information — tokens it has already processed in prior calls, tokens that describe context that hasn't changed, tokens that represent state the model is reconstructing because the architecture gives it no other way to access it."
+        text: "The waste column in that diagram isn't idleness. It's the model doing real computation on tokens that carry no new information: tokens it has already processed in prior calls, tokens that describe context that hasn't changed, and tokens that represent state the model is reconstructing because the architecture gives it no other way to access it."
       },
       {
         type: 'heading',
@@ -88,7 +88,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "Transformer attention is not uniform across a context window. Research on positional encoding and attention weight distribution has consistently shown that tokens in the middle of a very long context receive systematically lower attention weights than tokens at the beginning or end. As your context window fills — and at 1M+ tokens, it fills fast — earlier information begins to decay in influence."
+        text: "Transformer attention is not uniform across a context window. Research on positional encoding and attention weight distribution has consistently shown that tokens in the middle of a very long context receive systematically lower attention weights than tokens at the beginning or end. As your context window fills (and at 1M+ tokens, it fills fast), earlier information begins to decay in influence."
       },
       {
         type: 'paragraph',
@@ -100,7 +100,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'pullQuote',
-        text: "A 2M token window is a bigger room. RLLM is a different kind of building — one where the model doesn't have to hold the room in its head at all."
+        text: "A 2M token window is a bigger room. RLLM is a different kind of building, one where the model doesn't have to hold the room in its head at all."
       },
       {
         type: 'heading',
@@ -126,7 +126,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "Of the total tokens consumed in a session, what percentage were spent on active reasoning — generating novel output, synthesizing information, making decisions — versus re-reading context, reconstructing state, or processing information the model had already seen? **A high reasoning ratio means your architecture is efficient.** A low one means you're paying for overhead."
+        text: "Of the total tokens consumed in a session, what percentage were spent on active reasoning (generating novel output, synthesizing information, making decisions) versus re-reading context, reconstructing state, or processing information the model had already seen? **A high reasoning ratio means your architecture is efficient.** A low one means you're paying for overhead."
       },
       {
         type: 'heading',
@@ -135,7 +135,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "How many tokens does your system spend, per session, on recovering information from previous sessions or from the beginning of the current one? In a standard stateless LLM architecture, this number is high by default — the model reconstructs from scratch every time. In an architecture with persistent external state, it approaches zero. The Semantic Dictionary writes state on assignment and retrieves it via semantic query — no reconstruction required, no tokens consumed on recall."
+        text: "How many tokens does your system spend, per session, on recovering information from previous sessions or from the beginning of the current one? In a standard stateless LLM architecture, this number is high by default because the model reconstructs from scratch every time. In an architecture with persistent external state, it approaches zero. The Semantic Dictionary writes state on assignment and retrieves it via semantic query: no reconstruction required, no tokens consumed on recall."
       },
       {
         type: 'heading',
@@ -161,11 +161,11 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "RecourseLLM is a five-layer orchestration stack that sits above the inference layer. The key primitive is Layer 0: the Semantic Dictionary, a persistent external namespace backed by a vector store. When the agent assigns a variable — a document, a decision, a computed result, a project state — it goes into the namespace. When the agent needs it later, it issues a semantic query and retrieves exactly what it needs."
+        text: "RecourseLLM is a five-layer orchestration stack that sits above the inference layer. The key primitive is Layer 0: the Semantic Dictionary, a persistent external namespace backed by a vector store. When the agent assigns a variable (a document, a decision, a computed result, or a project state), it goes into the namespace. When the agent needs it later, it issues a semantic query and retrieves exactly what it needs."
       },
       {
         type: 'paragraph',
-        text: "The model's context window, at any given moment, contains only the active reasoning step and a small set of retrieved variables — typically five to ten. It does not contain the full history of the session. It does not re-read the system prompt on every call. It does not reconstruct state from scratch."
+        text: "The model's context window, at any given moment, contains only the active reasoning step and a small set of retrieved variables, typically five to ten. It does not contain the full history of the session. It does not re-read the system prompt on every call. It does not reconstruct state from scratch."
       },
       {
         type: 'paragraph',
@@ -177,7 +177,7 @@ export const blogPosts: BlogPost[] = [
           { num: 'PRINCIPLE 01', title: 'State lives outside the window', text: 'Variables, decisions, and session history persist in the Semantic Dictionary namespace. The model queries what it needs per step. Nothing is re-read unnecessarily.' },
           { num: 'PRINCIPLE 02', title: 'Code executes, not re-prompts', text: 'Safe Containerized Environment lets the model operate on live objects via generated code. Tool calls become function calls. Token overhead per operation is near zero.' },
           { num: 'PRINCIPLE 03', title: 'Skills compound across sessions', text: 'The SkillRegistry accumulates capabilities at Layer 3. Skills written and registered in one session are available in the next — without re-supplying their implementation in the context window.' },
-          { num: 'PRINCIPLE 04', title: 'Model-agnostic by design', text: 'The orchestration stack runs above the inference layer. Swap backends — Anthropic, OpenAI, Gemini, Ollama — without changing architecture. Every model improvement becomes an RLLM improvement.' }
+          { num: 'PRINCIPLE 04', title: 'Model-agnostic by design', text: 'The orchestration stack runs above the inference layer. Swap backends (Anthropic, OpenAI, Gemini, or Ollama) without changing architecture. Every model improvement becomes an RLLM improvement.' }
         ]
       },
       {
@@ -187,7 +187,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: 'paragraph',
-        text: "Jensen's $250K number is a provocation more than a prescription. The underlying point — that AI tooling is a professional resource that should be invested in seriously, not treated as a novelty line item — is correct and important."
+        text: "Jensen's $250K number is a provocation more than a prescription. The underlying point (that AI tooling is a professional resource that should be invested in seriously and not treated as a novelty line item) is correct and important."
       },
       {
         type: 'paragraph',
