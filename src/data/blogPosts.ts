@@ -23,7 +23,7 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         type: 'paragraph',
-        text: "Jensen Huang made headlines in March 2026 when he told the All-In podcast that a software engineer earning $500,000 a year should be spending at least $250,000 annually on AI tokens. The analogy he reached for was chip designers who refused to use CAD tools: professionally negligent, he said, in an age where AI is progressing this fast."
+        text: "Jensen Huang made headlines earlier in March (2026) when he told the All-In podcast that a software engineer earning $500,000 a year should be spending at least $250,000 annually on AI tokens. The analogy he reached for was chip designers who refused to use CAD tools: professionally negligent, he said, in an age where AI is progressing this fast."
       },
       {
         type: 'paragraph',
