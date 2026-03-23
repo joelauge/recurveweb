@@ -16,7 +16,7 @@ export const blogPosts: BlogPost[] = [
     title: 'Jensen Is Right.',
     subtitle: "The Question Is What You're Spending On.",
     deck: "When Nvidia's CEO says engineers should burn $250K in AI tokens a year, he's making a resource allocation argument. What he leaves open is whether those tokens are doing intelligence work — or housekeeping.",
-    author: 'RecourseLLM',
+    author: 'Joel Augé - Co-Founder @ ReCourseLLM',
     date: 'March 2026',
     readTime: '8 min read',
     category: 'Engineering Blog',
