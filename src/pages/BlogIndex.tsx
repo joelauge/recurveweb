@@ -1,4 +1,3 @@
-```javascript
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { blogPosts } from '../data/blogPosts';
@@ -85,6 +84,8 @@ const BlogIndex = () => {
                     ))}
                 </div>
             </div>
+            
+            <BlogSubscribe />
         </div>
     );
 };
