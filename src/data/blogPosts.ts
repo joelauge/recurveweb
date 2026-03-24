@@ -177,7 +177,7 @@ export const blogPosts: BlogPost[] = [
           { num: 'PRINCIPLE 01', title: 'State lives outside the window', text: 'Variables, decisions, and session history persist in the Semantic Dictionary namespace. The model queries what it needs per step. Nothing is re-read unnecessarily.' },
           { num: 'PRINCIPLE 02', title: 'Code executes, not re-prompts', text: 'Safe Containerized Environment lets the model operate on live objects via generated code. Tool calls become function calls. Token overhead per operation is near zero.' },
           { num: 'PRINCIPLE 03', title: 'Skills compound across sessions', text: 'The SkillRegistry accumulates capabilities at Layer 3. Skills written and registered in one session are available in the next — without re-supplying their implementation in the context window.' },
-          { num: 'PRINCIPLE 04', title: 'Model-agnostic by design', text: 'The orchestration stack runs above the inference layer. Swap backends (Anthropic, OpenAI, Gemini, or Ollama) without changing architecture. Every model improvement becomes an RLLM improvement.' }
+          { num: 'PRINCIPLE 04', title: 'Model-agnostic by design', text: 'The orchestration stack runs above the inference layer. Swap backends (Anthropic, OpenAI, or Gemini) without changing architecture. Every model improvement becomes an RLLM improvement.' }
         ]
       },
       {
