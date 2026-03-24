@@ -1,7 +1,9 @@
+```javascript
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { blogPosts } from '../data/blogPosts';
 import { Clock, ArrowRight } from 'lucide-react';
+import BlogSubscribe from '../components/blog/BlogSubscribe';
 
 const BlogIndex = () => {
     return (

@@ -62,7 +62,20 @@ export default {
             // 2. Send Auto-Reply to the User
             const nameFirst = name ? name.split(' ')[0] : 'there';
             const isWaitlist = formMode === 'waitlist';
+            const isBlog = formMode === 'blog_subscribe';
             
+            let subject = `Welcome to the Environment, ${nameFirst}.`;
+            let headline = "You're in.";
+            let message = `Thanks for joining the <span class="accent">RecourseLLM Beta Waitlist</span>. You've taken the first step toward escaping the context window.`;
+            let subMessage = "We're currently provisioning environments for our next cohort, and we'll notify you as soon as your access is ready.";
+            
+            if (isBlog) {
+                subject = "Welcome to the RecourseLLM Engineering Blog";
+                headline = "Intelligence, Delivered.";
+                message = `Thanks for subscribing to the <span class="accent">RecourseLLM Engineering Blog</span>. You'll now receive our latest architecture deep-dives and technical updates.`;
+                subMessage = "We believe in scaling intelligence through dynamic environments, not just bigger context windows. We're excited to share our progress with you.";
+            }
+
             const emailHtml = `
             <!DOCTYPE html>
             <html>
@@ -87,12 +100,12 @@ export default {
                         <img src="https://invest.recoursellm.com/recourse_logo_white.png" alt="RecourseLLM" class="logo">
                     </div>
                     <div class="content">
-                        <h1>You're in.</h1>
+                        <h1>${headline}</h1>
                         <p>Hi ${nameFirst},</p>
-                        <p>Thanks for joining the <span class="accent">RecourseLLM Beta Waitlist</span>.</p>
-                        <p>You've taken the first step toward escaping the context window. We're currently provisioning environments for our next cohort, and we'll notify you as soon as your access is ready.</p>
+                        <p>${message}</p>
+                        <p>${subMessage}</p>
                         <div class="divider"></div>
-                        <p style="font-size: 14px;">In the meantime, we recommend exploring our architecture to see how we've reconceptualized the codebase as a dynamic environment.</p>
+                        <p style="font-size: 14px;">Explore our architecture to see how we've reconceptualized the codebase as a dynamic environment.</p>
                         <a href="https://recoursellm.com/architecture" class="button">Read the Architecture</a>
                     </div>
                     <div class="footer">
@@ -114,7 +127,7 @@ export default {
                     body: JSON.stringify({
                         from: 'RecourseLLM <hello@recoursellm.com>',
                         to: [email],
-                        subject: `Welcome to the Environment, ${nameFirst}.`,
+                        subject: subject,
                         html: emailHtml
                     })
                 });
