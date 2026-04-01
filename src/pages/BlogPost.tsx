@@ -3,7 +3,12 @@ import { motion } from 'framer-motion';
 import { blogPosts } from '../data/blogPosts';
 import StatRow from '../components/blog/StatRow';
 import TokenDiagram from '../components/blog/TokenDiagram';
+import RagDiagram from '../components/blog/RagDiagram';
+import McpDiagram from '../components/blog/McpDiagram';
+import ComparisonTable from '../components/blog/ComparisonTable';
 import PrincipleGrid from '../components/blog/PrincipleGrid';
+import RelatedPosts from '../components/blog/RelatedPosts';
+import BlogSubscribe from '../components/blog/BlogSubscribe';
 import { ArrowLeft, Clock } from 'lucide-react';
 
 const BlogPost = () => {
@@ -160,6 +165,12 @@ const BlogPost = () => {
                                     return <StatRow key={idx} stats={block.stats} />;
                                 case 'tokenDiagram':
                                     return <TokenDiagram key={idx} label={block.label} items={block.items} />;
+                                case 'ragDiagram':
+                                    return <RagDiagram key={idx} label={block.label} sessions={block.sessions} />;
+                                case 'mcpDiagram':
+                                    return <McpDiagram key={idx} label={block.label} calls={block.calls} />;
+                                case 'comparisonTable':
+                                    return <ComparisonTable key={idx} label={block.label} rows={block.rows} />;
                                 case 'principleGrid':
                                     return <PrincipleGrid key={idx} principles={block.principles} />;
                                 case 'cta':
@@ -191,6 +202,9 @@ const BlogPost = () => {
                         })}
                     </div>
                 </article>
+
+                <RelatedPosts currentSlug={post.slug} />
+                <BlogSubscribe />
             </div>
         </div>
     );

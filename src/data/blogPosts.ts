@@ -223,5 +223,249 @@ export const blogPosts: BlogPost[] = [
         linkText: "Deploy the stack → recoursellm.com"
       }
     ]
+  },
+  {
+    slug: 'ai-protocols-bloat',
+    title: 'Which AI Protocols',
+    subtitle: 'Bloat Your Context Window. And Exactly How.',
+    deck: 'MCP, RAG, AutoGen, LangGraph, Function Calling, ACP, A2A, Semantic Kernel, ANP, Cap\'n Proto, agents.json. A precise account of what each one does to your context window — and why most of them do the same thing for the same reason.',
+    author: 'Joel Augé - Co-Founder @ RecourseLLM',
+    date: 'March 2026',
+    readTime: '9 min read',
+    category: 'Engineering Blog',
+    content: [
+      {
+        type: 'paragraph',
+        text: "The AI infrastructure stack has fragmented into a wide set of protocols, frameworks, and retrieval strategies — each solving a real problem, each with a different relationship to the context window. Some grow it aggressively on every call. Some bloat conditionally depending on implementation. A few don't touch it at all."
+      },
+      {
+        type: 'paragraph',
+        text: "The distinction matters because context window size is your primary cost driver in production. What follows is a protocol-by-protocol account of the bloat mechanism, organised by severity. No framework on this list is wrong for its purpose. Understanding what each one does to your token budget is the prerequisite for designing against it."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "Architecturally Guaranteed to Bloat"
+      },
+      {
+        type: 'paragraph',
+        text: "The following protocols and frameworks bloat by design. The mechanism is structural. No implementation choice prevents it."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "RAG: Three Compounding Problems"
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "Problem 1 — Retrieval is over-provisioned by design"
+      },
+      {
+        type: 'paragraph',
+        text: "RAG retrieval systems are tuned for recall. The cost of missing a relevant passage is higher than the cost of including an irrelevant one, so retrievers return more context than the model needs for any specific question. The model receives padded chunks on every call. Precision is not the objective at retrieval time. Coverage is. Those are not the same target, and the difference shows up in token counts."
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "Problem 2 — Multi-step workflows stack"
+      },
+      {
+        type: 'paragraph',
+        text: "In a RAG pipeline where the output of one retrieval step informs the next, each round's retrieved chunks stay in the window as prior context while the next round adds its own material on top. A five-step research workflow carries five full rounds of retrieved material simultaneously by the final call. The window does not summarize them. It does not compress them. It holds all of them, at full size, for every step that follows."
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "Problem 3 — Sessions are stateless. Retrieval is not free."
+      },
+      {
+        type: 'paragraph',
+        text: "Standard RAG has no session memory. Every new session starts cold. A document the model read, reasoned over, and drew conclusions from in a prior session gets retrieved and re-injected in its entirety on the next call. There is no mechanism to record that the model has already processed this material. Retrieval is stateless. Re-injection is total. The repetition is guaranteed and paid for every time."
+      },
+      {
+        type: 'ragDiagram',
+        label: 'RAG token consumption across sessions — same document base',
+        sessions: [
+          { name: 'Session 1, Step 1', tokens: '~120K tokens', newWidth: '100%', rereadWidth: '0%', label: 'All tokens: new retrieval' },
+          { name: 'Session 1, Step 5', tokens: '~480K tokens', newWidth: '25%', rereadWidth: '75%', rereadLeft: '25%', label: '75% prior round context carried forward' },
+          { name: 'Session 2, Step 1', tokens: '~120K tokens', newWidth: '0%', rereadWidth: '100%', label: '100% re-read: session starts cold, all prior work re-injected' }
+        ]
+      },
+      {
+        type: 'pullQuote',
+        text: "The retrieval is stateless and the injection is total. The repetition is guaranteed and billed every time."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "MCP: Structural Accumulation Per Call"
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "The protocol appends. It does not prune."
+      },
+      {
+        type: 'paragraph',
+        text: "Every tool invocation in an MCP session appends two blocks to the conversation history: a **tool_use** block describing the call, and a **tool_result** block containing the response. Both persist in the window. Neither expires. A session making 10 tool calls carries 20 accumulated history blocks by the end, and each subsequent call processes all of them again before producing its next output."
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "Tool results are unbounded in size"
+      },
+      {
+        type: 'paragraph',
+        text: "MCP places no constraint on what a tool returns. A **read_file** call on a large codebase returns the full file contents into the context. A **web_search** returns full page extracts. A database query returns full result sets. There is no native summarization layer in the protocol. The result lands in the window at full size and remains there for every call that follows."
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "Chained calls multiply the effect"
+      },
+      {
+        type: 'paragraph',
+        text: "In multi-step agentic workflows, MCP tool calls are frequently chained: the output of one call informs the input of the next. Each chained call adds its own result block while carrying every prior result block forward. A 20-step workflow is not 20 tool calls in terms of context cost. It is a window carrying the cumulative weight of 40 history blocks plus every result payload at the point of each new call. The cost function is not linear with steps. It is closer to quadratic."
+      },
+      {
+        type: 'mcpDiagram',
+        label: 'MCP context window growth — 5-call agentic sequence',
+        calls: [
+          { label: 'Call 1', tokens: '~2K', blocks: [{ type: 'system', label: 'system' }, { type: 'new', label: 'query' }] },
+          { label: 'Call 2', tokens: '~14K', blocks: [{ type: 'system', label: 'system' }, { type: 'tool', label: 'tool_1' }, { type: 'result', label: 'result_1' }, { type: 'new', label: 'query' }] },
+          { label: 'Call 3', tokens: '~26K', blocks: [{ type: 'system', label: 'system' }, { type: 'tool', label: 'tool_1' }, { type: 'result', label: 'result_1' }, { type: 'tool', label: 'tool_2' }, { type: 'result', label: 'result_2' }, { type: 'new', label: 'query' }] },
+          { label: 'Call 4', tokens: '~38K', blocks: [{ type: 'system', label: 'system' }, { type: 'tool', label: 'tool_1' }, { type: 'result', label: 'result_1' }, { type: 'tool', label: 'tool_2' }, { type: 'result', label: 'result_2' }, { type: 'tool', label: 'tool_3' }, { type: 'result', label: 'result_3' }, { type: 'new', label: 'query' }] },
+          { label: 'Call 5', tokens: '~52K', blocks: [{ type: 'system', label: 'system' }, { type: 'tool', label: 'tool_1' }, { type: 'result', label: 'result_1' }, { type: 'tool', label: 'tool_2' }, { type: 'result', label: 'result_2' }, { type: 'tool', label: 'tool_3' }, { type: 'result', label: 'result_3' }, { type: 'tool', label: 'tool_4' }, { type: 'result', label: 'result_4' }, { type: 'new', label: 'query' }] }
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "Function Calling / Tool Learning: The Worst Offender Per Invocation"
+      },
+      {
+        type: 'paragraph',
+        text: "Function calling is the pattern underlying most modern agentic systems: the model generates a structured payload (typically JSON) that invokes an external tool, and the result returns into the conversation. Every invocation appends a **tool_use** block and a **tool_result** block to the conversation history. Both are carried forward on every subsequent call. There is no pruning mechanism in the protocol."
+      },
+      {
+        type: 'paragraph',
+        text: "In a long agentic loop making 40 tool calls, the model is processing 80 accumulated history blocks before it generates its 41st output. The context does not summarise these. It carries them verbatim. At scale, the overhead is not incidental. It is the dominant cost of the session."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "AutoGen: The Most Aggressive Bloater on the List"
+      },
+      {
+        type: 'paragraph',
+        text: "AutoGen's design pattern is multi-agent conversation history. Each agent in a network sees the full message thread of what every other agent has said. In a five-agent workflow running 20 rounds of conversation, each agent's context is carrying the transcript of 100 exchanges before it produces its next output."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "LangGraph: State Accumulation by Architecture"
+      },
+      {
+        type: 'paragraph',
+        text: "LangGraph models agent workflows as cyclic graphs: nodes represent reasoning or action steps, edges represent transitions between them. The graph is stateful by design. A state object passes through every node and accumulates content as the graph traverses."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "Moderately Bloating — Depends on Implementation"
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "ACP and A2A: History Passing Between Agents"
+      },
+      {
+        type: 'paragraph',
+        text: "Both the Agent Communication Protocol and Google's Agent2Agent protocol are designed for inter-agent messaging: one agent sends a task or result to another. Whether they bloat depends on a single implementation choice — does the receiving agent inject only the current task payload into its context, or the full message thread?"
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "Semantic Kernel: Planner Context Growth"
+      },
+      {
+        type: 'paragraph',
+        text: "Semantic Kernel chains AI capabilities as plugins or skills, with a planner that coordinates their sequential execution. The planner maintains a context of what has been executed and what results were produced — necessary for coherent multi-step reasoning, but also a vector for accumulation."
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "ANP: JSON-LD Verbosity at Discovery Time"
+      },
+      {
+        type: 'paragraph',
+        text: "The Agent Network Protocol uses Decentralized Identifiers and JSON-LD graphs for agent discovery and secure communication across open networks. JSON-LD is verbose by design — the linked data format carries schema context with every payload to enable interoperability across systems that share no prior agreement."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "Does Not Touch the Context Window"
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "Cap'n Proto: Transport Layer Only"
+      },
+      {
+        type: 'paragraph',
+        text: "Cap'n Proto is a high-performance serialization format, often discussed as a lower-latency alternative to the JSON-RPC used in MCP. It operates entirely at the transport layer, below the model. It has no relationship to context window size whatsoever."
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "agents.json: Static Schema, One-Time Read"
+      },
+      {
+        type: 'paragraph',
+        text: "agents.json is a capability discovery schema: a structured description of what an agent can do. It is read once at initialization. It describes actions, not history. It accumulates nothing."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        text: "The Shared Root Cause"
+      },
+      {
+        type: 'paragraph',
+        text: "RAG and MCP bloat for the same reason: the context window is the only available state container. When there is no persistent external namespace, results have nowhere to go except back into the window. The protocol does not cause the bloat. The absence of an alternative does."
+      },
+      {
+        type: 'heading',
+        level: 3,
+        text: "How RLLM addresses this at Layer 0"
+      },
+      {
+        type: 'paragraph',
+        text: "The **Semantic Dictionary** is a persistent external namespace backed by a vector store. Variables assigned during a session persist across sessions. When the agent needs a value from prior work, it issues a semantic query against the namespace and retrieves specifically what the current reasoning step requires."
+      },
+      {
+        type: 'comparisonTable',
+        label: 'Context window bloat profile — full protocol comparison',
+        rows: [
+          { feature: 'Function Calling / Tool Learning', severity: 'Guaranteed — structural', severityType: 'bad', mechanism: 'tool_use + tool_result appended per call, no pruning', escape: 'No', escapeType: 'bad' },
+          { feature: 'AutoGen', severity: 'Guaranteed — scales agents × turns', severityType: 'bad', mechanism: 'Every agent carries full multi-agent transcript', escape: 'No', escapeType: 'bad' },
+          { feature: 'LangGraph', severity: 'Guaranteed — graph state grows per node', severityType: 'bad', mechanism: 'Full message history stored in state object, injected at each node', escape: 'Only with explicit per-node pruning', escapeType: 'bad' },
+          { feature: 'MCP', severity: 'Guaranteed — linear to quadratic', severityType: 'bad', mechanism: 'tool_use + tool_result blocks accumulate, unbounded result size', escape: 'No', escapeType: 'bad' },
+          { feature: 'RAG', severity: 'Guaranteed — stateless sessions', severityType: 'bad', mechanism: 'Over-provisioned chunks, multi-step stacking, full re-inject per session', escape: 'No — statelessness is architectural', escapeType: 'bad' },
+          { feature: 'ACP / A2A', severity: 'Moderate — implementation dependent', severityType: 'mid', mechanism: 'Full message thread passed between agents by default for coherence', escape: 'Yes — payload-only passing possible', escapeType: 'mid' },
+          { feature: 'Semantic Kernel', severity: 'Moderate — scales with pipeline depth', severityType: 'mid', mechanism: 'Planner context accumulates executed skill history across steps', escape: 'Yes — with aggressive context management', escapeType: 'mid' },
+          { feature: 'ANP', severity: 'Moderate — JSON-LD verbosity risk', severityType: 'mid', mechanism: 'Full knowledge graph injected if not selectively queried', escape: 'Yes — selective subgraph retrieval', escapeType: 'mid' },
+          { feature: 'Cap\'n Proto', severity: 'None — transport layer only', severityType: 'good', mechanism: 'Operates below model, zero context window contact', escape: 'N/A', escapeType: 'good' },
+          { feature: 'agents.json', severity: 'None — one-time static read', severityType: 'good', mechanism: 'Capability schema read at init, not accumulated at runtime', escape: 'N/A', escapeType: 'good' },
+          { feature: 'RLLM Layer 0', severity: 'Flat per step', severityType: 'good', mechanism: 'State in Semanticn Dictionary namespace, semantic query per step only', escape: 'Architectural — not a configuration choice', escapeType: 'good' }
+        ]
+      },
+      {
+        type: 'cta',
+        text: "\"Give AI a World. Not a Window.\"",
+        link: "https://recoursellm.com/installation",
+        linkText: "Deploy the stack → recoursellm.com"
+      }
+    ]
   }
 ];

@@ -104,9 +104,6 @@ export default {
                         <p>Hi ${nameFirst},</p>
                         <p>${message}</p>
                         <p>${subMessage}</p>
-                        <div class="divider"></div>
-                        <p style="font-size: 14px;">Explore our architecture to see how we've reconceptualized the codebase as a dynamic environment.</p>
-                        <a href="https://recoursellm.com/architecture" class="button">Read the Architecture</a>
                     </div>
                     <div class="footer">
                         <p>Joel, Pierre, and the RecourseLLM Team</p>

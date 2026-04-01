@@ -19,6 +19,7 @@ const BlogSubscribe = () => {
         body: JSON.stringify({
           email,
           formMode: 'blog_subscribe',
+          segment: 'ReCourseLLM'
         }),
       });
 
