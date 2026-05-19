@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who uses KnowDrive? — KnowDrive.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F8F8F6;
+    --bg2: #FFFFFF;
+    --bg3: #F2F2EE;
+    --surface: #FFFFFF;
+    --border: #E2E2DC;
+    --border-strong: #C8C8C0;
+    --accent: #1A6B3C;
+    --accent-light: #E8F5EE;
+    --accent-mid: #2D9D5C;
+    --accent-dim: #7BBD96;
+    --text: #1A1A18;
+    --text-2: #4A4A44;
+    --text-3: #888880;
+    --text-4: #AEAEA6;
+    --mono: 'IBM Plex Mono', 'Courier New', monospace;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --blue: #1E4FAB;
+    --blue-light: #EEF3FD;
+    --amber: #8A5A00;
+    --amber-light: #FEF6E4;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    height: 52px;
+    gap: 2rem;
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nav-logo .kd-icon {
+    width: 20px; height: 20px;
+    background: var(--accent);
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    margin-left: auto;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .nav-link {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-3);
+    text-decoration: none;
+    padding: 0.4rem 0.875rem;
+    border-right: 1px solid var(--border);
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .nav-link:last-child { border-right: none; }
+  .nav-link:hover { background: var(--bg3); color: var(--text); }
+
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: white;
+    background: var(--accent);
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--accent-mid); }
+
+  .page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  /* BREADCRUMB */
+  .breadcrumb {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-4);
+    padding: 1rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .breadcrumb a { color: var(--accent); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  /* HERO */
+  .hero {
+    padding: 4rem 0 3rem;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 4rem;
+    align-items: start;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hero-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 strong {
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    color: var(--text-2);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* Terminal-style card */
+  .terminal {
+    background: var(--text);
+    border-radius: 6px;
+    overflow: hidden;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+  }
+
+  .terminal-bar {
+    background: #2A2A28;
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #FF5F57; }
+  .dot.y { background: #FEBC2E; }
+  .dot.g { background: #28C840; }
+  .term-title { font-size: 0.68rem; color: #666; margin-left: 0.5rem; }
+
+  .terminal-body { padding: 1.25rem; line-height: 1.8; }
+  .t-dim { color: #666; }
+  .t-green { color: #4EC9B0; }
+  .t-yellow { color: #DCDCAA; }
+  .t-blue { color: #9CDCFE; }
+  .t-white { color: #D4D4D4; }
+  .t-accent { color: #4ECA84; }
+  .cursor { display: inline-block; width: 8px; height: 14px; background: #D4D4D4; vertical-align: middle; animation: blink 1s infinite; }
+  @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+  /* LAYOUT WRAPPER */
+  .content-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (max-width: 768px) { .content-layout { grid-template-columns: 1fr; } }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: sticky;
+    top: 68px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .sidebar-header {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-3);
+    background: var(--bg3);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .persona-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .persona-item:last-child { border-bottom: none; }
+  .persona-item:hover { background: var(--bg3); }
+  .persona-item.active {
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+
+  .persona-item-icon {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text-4);
+    width: 20px;
+    text-align: center;
+  }
+  .persona-item.active .persona-item-icon { color: var(--accent); }
+
+  .persona-item-name {
+    font-size: 0.8rem;
+    color: var(--text-2);
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .persona-item.active .persona-item-name { color: var(--accent); font-weight: 500; }
+
+  /* MAIN CONTENT */
+  .main-content { min-width: 0; }
+
+  /* DETAIL CARD */
+  .detail-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    transition: opacity 0.2s;
+  }
+  .detail-card.fading { opacity: 0; }
+
+  .detail-card-header {
+    padding: 1.25rem 1.5rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .file-icon {
+    width: 32px; height: 32px;
+    background: var(--accent-light);
+    border: 1px solid var(--accent-dim);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .detail-title-wrap h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.1rem;
+  }
+  .detail-title-wrap .detail-path {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text-4);
+  }
+
+  .message-bar {
+    padding: 0.875rem 1.5rem;
+    background: var(--accent-light);
+    border-bottom: 1px solid #C8E8D6;
+    font-size: 0.875rem;
+    color: var(--accent);
+    font-style: italic;
+    border-left: 3px solid var(--accent);
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  @media (max-width: 580px) { .detail-grid { grid-template-columns: 1fr; } }
+
+  .detail-section {
+    padding: 1.25rem 1.5rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .detail-section:nth-child(2n) { border-right: none; }
+  .detail-section:nth-last-child(-n+2) { border-bottom: none; }
+
+  .ds-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.875rem;
+  }
+
+  .pain-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 0.6rem;
+    font-size: 0.83rem;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+  .pain-row .bullet { color: #CC3333; font-size: 0.7rem; margin-top: 0.2rem; flex-shrink: 0; }
+
+  .win-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 0.6rem;
+    font-size: 0.83rem;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+  .win-row .bullet { color: var(--accent); font-size: 0.7rem; margin-top: 0.2rem; flex-shrink: 0; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text-3);
+  }
+  .chip.green {
+    background: var(--accent-light);
+    border-color: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+    background: var(--border);
+  }
+  @media (max-width: 580px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+
+  .stat-cell {
+    background: var(--surface);
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .stat-val {
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+  .stat-label { font-size: 0.72rem; color: var(--text-3); }
+
+  /* SECTION HEADERS */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .section-header .s-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text-4);
+    margin-left: auto;
+  }
+
+  /* INDUSTRIES */
+  .industry-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 0.6rem 1.25rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text-4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .table-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 0.7rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s;
+  }
+  .table-row:last-child { border-bottom: none; }
+  .table-row:hover { background: var(--bg3); }
+
+  .tr-name {
+    font-size: 0.83rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .tr-roles {
+    font-size: 0.8rem;
+    color: var(--text-3);
+    font-family: var(--mono);
+  }
+
+  /* HOOKS */
+  .hook-tabs {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    width: fit-content;
+    margin-bottom: 1.25rem;
+  }
+  .hook-tab {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-3);
+    background: var(--surface);
+    border: none;
+    border-right: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    font-weight: 400;
+  }
+  .hook-tab:last-child { border-right: none; }
+  .hook-tab:hover { background: var(--bg3); color: var(--text); }
+  .hook-tab.active { background: var(--accent); color: white; }
+
+  .hook-list {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+    transition: opacity 0.18s;
+  }
+  .hook-list.fading { opacity: 0; }
+
+  .hook-item {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s;
+  }
+  .hook-item:last-child { border-bottom: none; }
+  .hook-item:hover { background: var(--bg3); }
+  .hook-item:hover .hook-headline { color: var(--accent); }
+
+  .hook-headline {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    transition: color 0.15s;
+  }
+  .hook-body { font-size: 0.83rem; color: var(--text-2); line-height: 1.65; }
+
+  /* CTA */
+  .cta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media (max-width: 580px) { .cta-card { grid-template-columns: 1fr; } }
+
+  .cta-headline { font-size: 1.05rem; font-weight: 500; color: var(--text); margin-bottom: 0.4rem; }
+  .cta-sub { font-size: 0.83rem; color: var(--text-3); line-height: 1.5; }
+
+  .cta-buttons { display: flex; flex-direction: column; gap: 0.5rem; min-width: 160px; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    padding: 0.6rem 1.25rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--accent-mid); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-3);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    padding: 0.6rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-ghost:hover { border-color: var(--accent-dim); color: var(--accent); }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s, transform 0.6s; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://knowdrive.ai" class="nav-logo">
+    <span class="kd-icon">K</span>
+    KnowDrive
+  </a>
+  <div class="nav-links">
+    <a href="https://knowdrive.ai" class="nav-link">Docs</a>
+    <a href="https://knowdrive.ai" class="nav-link">Pricing</a>
+    <a href="https://knowdrive.ai" class="nav-link">Blog</a>
+  </div>
+  <a href="https://knowdrive.ai" class="nav-cta">Get Early Access</a>
+</nav>
+
+<div class="page">
+  <div class="breadcrumb">
+    <a href="https://knowdrive.ai">knowdrive.ai</a>
+    <span>/</span>
+    <a href="#">use-cases</a>
+    <span>/</span>
+    <span>who-uses-knowdrive</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <p class="hero-label">Use case explorer</p>
+      <h1>Who needs <strong>unlimited<br>context storage</strong>?</h1>
+      <p class="hero-sub">Across every industry, there are people whose work is blocked by data that doesn't fit. Too many files. Too large. Too distributed. KnowDrive removes that ceiling — 1 GB to 1 PB, queryable by any AI agent or LLM.</p>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="term-title">knowdrive — query</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-dim">$</span> <span class="t-green">kd</span> <span class="t-blue">query</span> <span class="t-white">--corpus ./data/</span></div>
+        <div><span class="t-dim">  Loading 847 files... </span><span class="t-accent">done</span></div>
+        <div><span class="t-dim">  Context: </span><span class="t-accent">2.4 TB</span><span class="t-dim"> indexed</span></div>
+        <div><span class="t-dim">  Status: </span><span class="t-accent">ready</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-dim">></span> <span class="t-yellow">query</span><span class="t-white">(</span><span class="t-dim">"</span><span class="t-accent">Which vendors exceeded SLA</span></div>
+        <div><span class="t-dim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in Q3 across all regions?</span><span class="t-dim">"</span><span class="t-white">)</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-dim">  Searching 847 documents...</span></div>
+        <div><span class="t-accent">  ✓ Found 12 vendors, 34 incidents</span></div>
+        <div><span class="t-dim">  Tokens used: </span><span class="t-accent">~23K</span><span class="t-dim"> (vs ~1.2M standard)</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-dim">$</span> <span class="cursor"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row reveal">
+    <div class="stat-cell"><div class="stat-val">9</div><div class="stat-label">Core personas</div></div>
+    <div class="stat-cell"><div class="stat-val">14+</div><div class="stat-label">Industries</div></div>
+    <div class="stat-cell"><div class="stat-val">98%</div><div class="stat-label">Token reduction</div></div>
+    <div class="stat-cell"><div class="stat-val">1 PB</div><div class="stat-label">Max corpus size</div></div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="content-layout reveal">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        📁 personas/
+      </div>
+      <div id="personaSidebar"></div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-content">
+
+      <!-- DETAIL -->
+      <div id="detailCard" class="detail-card">
+        <!-- populated by JS -->
+      </div>
+
+      <!-- INDUSTRIES -->
+      <div class="section-header">
+        <h2>Industry coverage</h2>
+        <span class="s-label">14 verticals</span>
+      </div>
+      <div class="industry-table">
+        <div class="table-header">
+          <div>Industry</div>
+          <div>Typical data types</div>
+        </div>
+        <div id="industryTable"></div>
+      </div>
+
+      <!-- HOOKS -->
+      <div class="section-header">
+        <h2>Marketing angles</h2>
+        <span class="s-label">messaging by frame</span>
+      </div>
+      <div class="hook-tabs" id="hookTabs">
+        <button class="hook-tab active" onclick="switchHook('pain', this)">pain-led</button>
+        <button class="hook-tab" onclick="switchHook('outcome', this)">outcome-led</button>
+        <button class="hook-tab" onclick="switchHook('knowdrive', this)">knowdrive-specific</button>
+      </div>
+      <div class="hook-list" id="hookList"></div>
+
+      <!-- CTA -->
+      <div class="cta-card reveal">
+        <div>
+          <div class="cta-headline">Ready to give your team unlimited context?</div>
+          <div class="cta-sub">KnowDrive is Dropbox for Inference. Share persistent context across your whole team — 1 GB to 1 PB, always queryable.</div>
+        </div>
+        <div class="cta-buttons">
+          <a href="https://knowdrive.ai" class="btn-primary">Get Early Access</a>
+          <a href="https://knowdrive.ai" class="btn-ghost">Read the docs</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+const personas = [
+  {
+    id: 'data-scientist', icon: '◈', title: 'Data Scientist',
+    desc: 'Models & pipelines across massive datasets',
+    ext: '.ipynb',
+    message: "Stop sampling. Start knowing. Query your entire dataset — all of it — in one session.",
+    pains: ['Notebooks crash loading full datasets', 'Samples distort model accuracy', "Can't query across 50+ CSVs simultaneously", 'Context window kills exploratory analysis'],
+    wins: ['Query full dataset without sampling', 'Exploratory analysis at full fidelity', 'Cross-file pattern detection instantly'],
+    channels: ['Kaggle', 'Towards Data Science', 'Hugging Face', 'LinkedIn'],
+    triggers: ['PyData', 'Jupyter', 'notebook crashes', 'out-of-memory']
+  },
+  {
+    id: 'business-analyst', icon: '▦', title: 'Business Analyst',
+    desc: 'Cross-functional reporting & insights',
+    ext: '.xlsx',
+    message: "Your spreadsheet has a ceiling. Your business doesn't. Query three years of data like it's one conversation.",
+    pains: ['Excel crashes on large exports', "Can't synthesize 3 years of reports at once", 'Manual copy-paste between tools', 'Insights lost in 40-tab spreadsheets'],
+    wins: ['Full multi-year data in one query session', 'Narrative synthesis across all reports', 'Remove the spreadsheet ceiling'],
+    channels: ['LinkedIn', 'Tableau Community', 'Power BI Forum', 'SlideShare'],
+    triggers: ['Excel limits', 'BI frustration', 'reporting bottlenecks']
+  },
+  {
+    id: 'data-engineer', icon: '⬡', title: 'Data Engineer',
+    desc: 'Pipelines, schemas, infrastructure at scale',
+    ext: '.yaml',
+    message: "Your data lake is a black box. KnowDrive gives you a searchlight — query every partition, schema, and log.",
+    pains: ['Schema drift breaks pipelines silently', 'No unified view across lake partitions', 'Debugging 1000s of log files is manual', 'Docs never reflect current pipeline state'],
+    wins: ['Intelligent context across entire lake', 'Natural language pipeline debugging', 'Self-documenting data systems'],
+    channels: ['dbt Slack', 'Data Engineering Weekly', 'GitHub', 'Airflow community'],
+    triggers: ['data lake', 'pipeline observability', 'schema drift', 'dbt']
+  },
+  {
+    id: 'research-analyst', icon: '◎', title: 'Research Analyst',
+    desc: 'Hundreds of sources, one synthesis',
+    ext: '.pdf',
+    message: "Read 300 papers like one document. KnowDrive holds your entire research corpus in queryable context.",
+    pains: ["300 PDFs exceed any context window", 'Synthesis is manual and time-consuming', 'Source tracking across docs is error-prone', "Can't compare literature at speed"],
+    wins: ['Entire research corpus in live query', 'Cross-document synthesis in seconds', 'Traceable citations, not hallucinations'],
+    channels: ['Academia.edu', 'ResearchGate', 'Substack', 'LinkedIn'],
+    triggers: ['literature review', 'document synthesis', 'research bottleneck']
+  },
+  {
+    id: 'compliance-officer', icon: '⬣', title: 'Compliance Officer',
+    desc: 'Regulatory docs across every system',
+    ext: '.docx',
+    message: "Compliance shouldn't be a scavenger hunt. Query every policy, regulation, and internal doc — simultaneously.",
+    pains: ['Policy docs span thousands of pages', "Can't cross-check regs against internal docs", 'Audit prep is a multi-week ordeal', 'Reg changes ripple invisibly through others'],
+    wins: ['Query all policy + regulation simultaneously', 'Instant cross-reference across doc sets', 'Audit-ready in hours, not weeks'],
+    channels: ['Compliance Week', 'ACFE', 'ISACA', 'LinkedIn'],
+    triggers: ['PIPEDA', 'HIPAA', 'SOX', 'audit prep', 'regulatory change']
+  },
+  {
+    id: 'clinical-data', icon: '◉', title: 'Clinical Data Manager',
+    desc: 'Patient records, trial data, EMR exports',
+    ext: '.hl7',
+    message: "Patient data that talks to itself. KnowDrive runs locally, keeps records private, and delivers the full clinical picture.",
+    pains: ['EMR exports are massive and siloed', 'Trial data lives in 20 disconnected systems', 'Manual reconciliation takes weeks', 'Patient context lost across file boundaries'],
+    wins: ['Unified context over all records', 'Trial data synthesis without sampling', 'HIPAA-grade local storage'],
+    channels: ['SCDM', 'CDISC', 'DIA', 'LinkedIn'],
+    triggers: ['clinical trial', 'EMR', 'patient records', 'HIPAA']
+  },
+  {
+    id: 'financial-analyst', icon: '▣', title: 'Financial Analyst',
+    desc: 'Multi-year filings, markets, models',
+    ext: '.csv',
+    message: "Ten years of filings. One query. KnowDrive holds the full financial picture while you ask the real questions.",
+    pains: ['10-K filings exceed any LLM window', "Can't compare 10 years of filings in one session", 'Market data and fundamentals never in one view', 'Manual modelling from fragmented sources'],
+    wins: ['Multi-year analysis in one session', 'Natural language queries over financial data', 'No more tab-switching between sources'],
+    channels: ['CFA Institute', 'Bloomberg users', 'Seeking Alpha', 'LinkedIn'],
+    triggers: ['earnings analysis', '10-K', 'financial modelling', 'data room']
+  },
+  {
+    id: 'ml-engineer', icon: '⊛', title: 'ML / AI Engineer',
+    desc: 'Training data, evals, fine-tune pipelines',
+    ext: '.jsonl',
+    message: "You can't fine-tune what you can't see. KnowDrive gives you full-corpus visibility at training data scale.",
+    pains: ['Training data QA is impossibly manual', "Eval datasets don't fit in one session", 'Fine-tuning requires knowing full distribution', 'Prompt engineering blind to edge cases in data'],
+    wins: ['Full training corpus in queryable context', 'Eval and edge-case detection at scale', 'Distribution-aware model development'],
+    channels: ['Hugging Face', 'Weights & Biases', 'arXiv', 'Discord'],
+    triggers: ['fine-tuning', 'eval pipeline', 'training data quality', 'RLHF']
+  },
+  {
+    id: 'ops-supply-chain', icon: '⬗', title: 'Ops & Supply Chain',
+    desc: 'Logistics, inventory, vendor data',
+    ext: '.xml',
+    message: "Your supply chain generates millions of signals. KnowDrive reads all of them — in plain language, in real time.",
+    pains: ['Vendor data, POs, and logistics live in silos', 'Stockout signals buried in thousands of SKUs', 'Manual reconciliation across 5 ERPs', 'No single view of supplier performance history'],
+    wins: ['Unified ops intelligence across all sources', 'Natural language queries over inventory', 'Anomaly detection without SQL'],
+    channels: ['APICS', 'Supply Chain Dive', 'LinkedIn', 'Gartner'],
+    triggers: ['ERP integration', 'inventory intelligence', 'supply chain visibility']
+  }
+];
+
+const industries = [
+  { name: 'Healthcare', roles: 'clinical, imaging, EMR, genomics' },
+  { name: 'Finance & Banking', roles: 'risk, trading, compliance, audit' },
+  { name: 'Manufacturing', roles: 'IoT sensors, QA logs, supply chain' },
+  { name: 'Tech / SaaS', roles: 'product analytics, telemetry, logs' },
+  { name: 'Retail & E-commerce', roles: 'inventory, behaviour, SKU data' },
+  { name: 'Energy & Utilities', roles: 'grid, sensor, geological data' },
+  { name: 'Government / Defence', roles: 'intelligence, census, policy docs' },
+  { name: 'Academia & Research', roles: 'papers, experiments, corpora' },
+  { name: 'Logistics & Transport', roles: 'routes, telemetry, fleet ops' },
+  { name: 'Biotech / Pharma', roles: 'trial data, lab results, genomics' },
+  { name: 'Telecom', roles: 'network logs, churn, usage data' },
+  { name: 'Real Estate', roles: 'listings, contracts, market data' },
+  { name: 'Media & Publishing', roles: 'audience, content, rights data' },
+  { name: 'Legal', roles: 'case law, contracts, discovery docs' }
+];
+
+const hooks = {
+  pain: [
+    { headline: 'Your context window is lying to you.', body: 'Every time you sample a dataset to fit it into an LLM, you make decisions on incomplete information. KnowDrive stores it all and makes it queryable — the full dataset, at any scale, without truncation.' },
+    { headline: 'Out of memory is out of insight.', body: 'The notebook crash, the truncated export, the "file too large" error — these aren\'t technical problems. They\'re business problems. Data that doesn\'t fit doesn\'t get analyzed, and decisions get made on partial pictures.' },
+    { headline: 'Your analysts are babysitting file limits.', body: "When your data team spends their time splitting files and stitching results back together, they're doing janitorial work. KnowDrive is Dropbox for Inference — your whole corpus, always ready, always queryable." }
+  ],
+  outcome: [
+    { headline: 'What if your entire data lake could answer a question?', body: 'Not a sample of it. Not a filtered slice. The whole thing — shared across your team, queryable by any AI agent, from 1 GB to 1 PB.' },
+    { headline: 'Collaborative context at petabyte scale.', body: "Load everything. Share it with your team. Ask anything. KnowDrive's persistent context memory means every analyst, agent, and workflow starts from the same complete picture — not a private, siloed snapshot." },
+    { headline: 'The missing layer between your data and your AI.', body: 'LLMs are smart. Your data is massive. KnowDrive is the persistent, collaborative storage layer that connects them — so your AI actually knows what it\'s working with.' }
+  ],
+  knowdrive: [
+    { headline: 'Dropbox for Inference.', body: "Your team already shares files. Now share the context those files create. KnowDrive gives every team member — and every AI agent — access to the same persistent, queryable knowledge base. 1 GB to 1 PB." },
+    { headline: 'Unlimited collaborative context window.', body: "KnowDrive is the world's only unlimited collaborative context window. Scale your corpus as your data grows, share it across your organization, and query it from any LLM or AI agent." },
+    { headline: 'Local-first for regulated industries.', body: 'KnowDrive can run on-premises, keeping sensitive data inside your infrastructure. PIPEDA. HIPAA. SOX. Your data never leaves — and your compliance team stays calm while your analysts get full-corpus access.' }
+  ]
+};
+
+let activePersona = 0;
+let activeHook = 'pain';
+
+function buildSidebar() {
+  const sb = document.getElementById('personaSidebar');
+  personas.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'persona-item' + (i === 0 ? ' active' : '');
+    item.innerHTML = `<span class="persona-item-icon">${p.icon}</span><span class="persona-item-name">${p.title}</span>`;
+    item.addEventListener('click', () => selectPersona(i));
+    sb.appendChild(item);
+  });
+}
+
+function selectPersona(i) {
+  activePersona = i;
+  document.querySelectorAll('.persona-item').forEach((el, idx) => el.classList.toggle('active', idx === i));
+  const card = document.getElementById('detailCard');
+  card.classList.add('fading');
+  setTimeout(() => { renderDetail(); card.classList.remove('fading'); }, 180);
+}
+
+function renderDetail() {
+  const p = personas[activePersona];
+  document.getElementById('detailCard').innerHTML = `
+    <div class="detail-card-header">
+      <div class="file-icon">${p.ext}</div>
+      <div class="detail-title-wrap">
+        <h2>${p.title}</h2>
+        <div class="detail-path">personas/${p.id}${p.ext}</div>
+      </div>
+    </div>
+    <div class="message-bar">"${p.message}"</div>
+    <div class="detail-grid">
+      <div class="detail-section">
+        <div class="ds-label">// pain points</div>
+        ${p.pains.map(x => `<div class="pain-row"><span class="bullet">✗</span> ${x}</div>`).join('')}
+      </div>
+      <div class="detail-section">
+        <div class="ds-label">// gains with knowdrive</div>
+        ${p.wins.map(x => `<div class="win-row"><span class="bullet">✓</span> ${x}</div>`).join('')}
+      </div>
+      <div class="detail-section">
+        <div class="ds-label">// reach them at</div>
+        <div class="chip-row">${p.channels.map(c => `<span class="chip green">${c}</span>`).join('')}</div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-label">// trigger keywords</div>
+        <div class="chip-row">${p.triggers.map(t => `<span class="chip">${t}</span>`).join('')}</div>
+      </div>
+    </div>
+  `;
+}
+
+function buildIndustries() {
+  const table = document.getElementById('industryTable');
+  industries.forEach(ind => {
+    const row = document.createElement('div');
+    row.className = 'table-row';
+    row.innerHTML = `<div class="tr-name">${ind.name}</div><div class="tr-roles">${ind.roles}</div>`;
+    table.appendChild(row);
+  });
+}
+
+function renderHooks() {
+  const list = document.getElementById('hookList');
+  list.classList.add('fading');
+  setTimeout(() => {
+    list.innerHTML = hooks[activeHook].map(h => `
+      <div class="hook-item">
+        <div class="hook-headline">${h.headline}</div>
+        <div class="hook-body">${h.body}</div>
+      </div>
+    `).join('');
+    list.classList.remove('fading');
+  }, 150);
+}
+
+function switchHook(type, btn) {
+  activeHook = type;
+  document.querySelectorAll('.hook-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderHooks();
+}
+
+function initReveal() {
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.06 });
+  els.forEach(el => obs.observe(el));
+}
+
+buildSidebar();
+renderDetail();
+buildIndustries();
+renderHooks();
+initReveal();
+</script>
+</body>
+</html>
