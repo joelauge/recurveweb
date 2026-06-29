@@ -6,9 +6,30 @@ compatibility_flags = ["nodejs_compat"]
 # [vars]
 # RESEND_AUDIENCE_ID = "54d536d9-8a43-41f5-8894-2c349c6f4762"
 
-# [[kv_namespaces]]
-# binding = "MY_KV_NAMESPACE"
-# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+# ── Routes that must be served by this Worker (not GitHub Pages) ─────────────
+# These paths need real HTTP responses the static SPA can't provide:
+#   - /oauth/native-callback  → redirect to interviewer:// custom scheme
+#   - /.well-known/*          → app-link association files (must return JSON, no redirect)
+[[routes]]
+pattern = "recoursellm.com/oauth/native-callback"
+zone_name = "recoursellm.com"
+
+[[routes]]
+pattern = "recoursellm.com/.well-known/apple-app-site-association"
+zone_name = "recoursellm.com"
+
+[[routes]]
+pattern = "recoursellm.com/.well-known/assetlinks.json"
+zone_name = "recoursellm.com"
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[kv_namespaces]]
+binding = "INVESTOR_WHITELIST"
+id = "0ed0e62cd7694301bb62dcaf622b925c"
+
+[[kv_namespaces]]
+binding = "COSIGN_SESSIONS"
+id = "7bd68a359dc94b44893b1ef68d1f1564"
 
 # [[r2_buckets]]
 # binding = "MY_BUCKET"
